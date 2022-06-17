@@ -1,4 +1,4 @@
-// ** ContainerMap v0.3
+// ** ContainerMap v0.4
 #include <iostream>
 #include <string>
 #include <list>
@@ -26,6 +26,10 @@ struct Trasnform
 	Vector3 Scale;
 };
 
+
+
+
+
 struct Object
 {
 	Trasnform Info;
@@ -42,25 +46,86 @@ struct Player : public Object
 	Player(const Trasnform& _Info) : Object(_Info) {};
 };
 
+
+// ** 오브젝트 몃개 더 추가함.
+struct Enemy : public Object
+{
+	Enemy() {};
+
+	Enemy(const Trasnform& _Info) : Object(_Info) {};
+};
+
+struct Bullet : public Object
+{
+	Bullet() {};
+
+	Bullet(const Trasnform& _Info) : Object(_Info) {};
+};
+
+struct Boss : public Object
+{
+	Boss() {};
+
+	Boss(const Trasnform& _Info) : Object(_Info) {};
+};
+
+
+
+
 map<string, list<Object*>> Objects;
+
 
 void Initialize();
 void AddObject(string _Key, Object* _Object);
 
+
 int main(void)
 {
-	//Initialize();
 	Trasnform Info;
 
 	Info.Position.x = 10;
 	Info.Position.y = 20;
 	Info.Position.z = 30;
-
+	
+	AddObject("Player", new Player(Info));
+	AddObject("Player", new Player(Info));
 	AddObject("Player", new Player(Info));
 
-	//cout << Objects["Player"]->Info.Position.x << endl;
-	//cout << Objects["Player"]->Info.Position.y << endl;
-	//cout << Objects["Player"]->Info.Position.z << endl;
+	Info.Position.x = 100;
+	Info.Position.y = 200;
+	Info.Position.z = 300;
+
+	AddObject("Enemy", new Enemy(Info));
+	AddObject("Enemy", new Enemy(Info));
+
+	Info.Position.x = 1000;
+	Info.Position.y = 2000;
+	Info.Position.z = 3000;
+
+	AddObject("Bullet", new Bullet(Info));
+	AddObject("Bullet", new Bullet(Info));
+	AddObject("Bullet", new Bullet(Info));
+
+	Info.Position.x = 10000;
+	Info.Position.y = 20000;
+	Info.Position.z = 30000;
+
+	AddObject("Boss", new Boss(Info));
+	AddObject("Boss", new Boss(Info));
+	AddObject("Boss", new Boss(Info));
+
+	for (map<string, list<Object*>>::iterator iter = Objects.begin(); 
+		iter != Objects.end(); ++iter)
+	{
+		cout << " [" << iter->first << "] " << endl;
+		for (list<Object*>::iterator iter2 = iter->second.begin();
+			iter2 != iter->second.end(); ++iter2)
+		{
+			cout << (*iter2)->Info.Position.x << ", " <<
+				(*iter2)->Info.Position.y << ", " << (*iter2)->Info.Position.z << endl;
+		}
+		cout << endl;
+	}
 
 	return 0;
 }
